@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ghena!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8a2be2, #da70d6, #ff69b4);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .birthday-title {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-text {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .name-input {
+            width: 300px;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 3px solid #ffd700;
+            border-radius: 50px;
+            text-align: center;
+            margin-bottom: 30px;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .name-input:focus {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+        }
+
+        .gift-container {
+            perspective: 1000px;
+            margin: 30px auto;
+        }
+
+        .gift-box {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            margin: 0 auto;
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.5s;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transform-style: preserve-3d;
+        }
+
+        .gift-box:hover {
+            transform: rotateY(15deg) scale(1.05);
+        }
+
+        .gift-box::before {
+            content: '🎁';
+            font-size: 4rem;
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            width: 160px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            border-radius: 10px 10px 0 0;
+            transition: all 0.5s;
+            transform-origin: bottom;
+        }
+
+        .gift-box.open .gift-lid {
+            transform: rotateX(120deg);
+        }
+
+        .gift-content {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .inner-gift {
+            background: linear-gradient(135deg, #9370db, #8a2be2);
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .redbull-section {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .redbull-logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 3.5rem;
+            color: #ffffff;
+            text-shadow: 3px 3px 0 #000;
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .redbull-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 3px solid #fdbb2d;
+        }
+
+        .redbull-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            animation: confettiFall 5s linear infinite;
+            z-index: 100;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .personal-message {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            border-left: 5px solid #ffd700;
+        }
+
+        .message-btn {
+            background: linear-gradient(45deg, #1a2a6c, #2a3a9c);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 20px 0;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.6);
+        }
+
+        .special-message {
+            display: none;
+            background: rgba(255, 215, 0, 0.15);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            text-align: left;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            animation: fadeIn 1.5s;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .birthday-animation {
+            font-size: 4rem;
+            margin: 20px 0;
+            animation: party 2s infinite;
+        }
+
+        @keyframes party {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.3) rotate(-3deg); }
+        }
+
+        .final-message {
+            font-size: 1.8rem;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            border: 2px solid #ffd700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .instruction {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .qr-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .qr-code-container {
+            width: 200px;
+            height: 200px;
+            margin: 15px auto;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #qrcode {
+            width: 100%;
+            height: 100%;
+        }
+
+        .qr-instruction {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti -->
+    <div id="confettiContainer"></div>
+
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen">
+            <div class="birthday-animation">🎉🎂🎊</div>
+            <h1 class="birthday-title">Happy Birthday!</h1>
+            <p class="welcome-text">
+                Welcome to your special birthday surprise!<br>
+                Enter your name to unlock your gift...
+            </p>
+            <input type="text" class="name-input" id="nameInput" placeholder="Enter your name here...">
+            <button class="submit-btn" onclick="checkName()">Unlock My Gift</button>
+            
+            <div class="qr-section">
+                <h2><i class="fas fa-qrcode"></i> Scan QR Code</h2>
+                <div class="qr-code-container">
+                    <div id="qrcode"></div>
+                </div>
+                <p class="qr-instruction">Scan this QR code to easily access this page on your phone!</p>
+            </div>
+        </div>
+
+        <!-- Birthday Message Screen -->
+        <div id="birthdayScreen" class="hidden">
+            <div class="birthday-animation">🎉🎂🎊</div>
+            <h1 class="birthday-title" id="personalizedTitle">Happy Birthday!</h1>
+            <div class="personal-message" id="birthdayMessage">
+                We're so happy to celebrate with you!
+            </div>
+            
+            <p class="instruction">Click on the gift box to reveal your surprise!</p>
+            
+            <div class="gift-container">
+                <div class="gift-box" id="mainGift" onclick="openGift()">
+                    <div class="gift-lid"></div>
+                </div>
+            </div>
+            
+            <div class="gift-content" id="giftContent">
+                <div class="inner-gift">
+                    <h2>First Surprise!</h2>
+                    <p>You've unlocked the first layer of your gift!</p>
+                    <p>But wait... there's more!</p>
+                    
+                    <div class="gift-container">
+                        <div class="gift-box" id="innerGift" onclick="openInnerGift()" style="background: linear-gradient(45deg, #9370db, #8a2be2);">
+                            <div class="gift-lid" style="background: linear-gradient(45deg, #8a2be2, #9370db);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gift-content" id="finalGift">
+                <div class="redbull-section">
+                    <div class="redbull-logo">RED BULL</div>
+                    <div class="redbull-image">
+                        <img src="https://i5.walmartimages.com/asr/d56357b7-a766-49ca-ba06-14396d3b23bc.8e09a5dd2a771592ccc41e0bccae8398.jpeg?odnHeight=372&odnWidth=372&odnBg=FFFFF" alt="Red Bull Winter Edition">
+                    </div>
+                    <div class="final-message">
+                        Enjoyyy yourr Red Bulll! 🚀
+                    </div>
+                </div>
+                
+                <button class="message-btn" onclick="showMessage()">
+                    <i class="fas fa-heart"></i> Special Message For You
+                </button>
+                
+                <div class="special-message" id="specialMessage">
+                    <h3>Heyy Ghena,</h3>
+                    <p>
+                        Ghena, I don't even know what to say but I swear you're the most precious person to me 
+                        and I love your vibe so much! And your jokes with me sometimes aren't nice but I still laugh. 
+                        I swear I cherish you so much and I hope you're always happy. 
+                    </p>
+                    <p style="text-align: center; margin-top: 15px; font-weight: bold;">
+                        Happy Birthday! 🎂💖
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إنشاء QR Code عند تحميل الصفحة
+        function generateQRCode() {
+            const currentUrl = window.location.href;
+            QRCode.toCanvas(document.getElementById('qrcode'), currentUrl, function (error) {
+                if (error) console.error(error);
+                console.log('QR code generated successfully!');
+            });
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#ffd700', '#ff69b4', '#9370db', '#00ffff', '#ff4500'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                container.appendChild(confetti);
+            }
+        }
+
+        // Check the name and show birthday message
+        function checkName() {
+            const nameInput = document.getElementById('nameInput');
+            const name = nameInput.value.trim();
+            
+            // Only allow "Ghena" to access
+            if (name.toLowerCase() === "ghena") {
+                document.getElementById('welcomeScreen').classList.add('hidden');
+                document.getElementById('birthdayScreen').classList.remove('hidden');
+                
+                // Personalize the message
+                document.getElementById('personalizedTitle').textContent = `Happy Birthday, Ghena!`;
+                document.getElementById('birthdayMessage').textContent = 
+                    `Heyy Ghena, wishing you the most amazing birthday filled with joy, laughter, and wonderful surprises!`;
+                
+                // Create confetti
+                createConfetti();
+            } else {
+                alert('Sorry, this surprise is only for Ghena! Please enter "Ghena" to continue.');
+            }
+        }
+
+        // Open the first gift box
+        function openGift() {
+            const giftBox = document.getElementById('mainGift');
+            const giftContent = document.getElementById('giftContent');
+            
+            giftBox.classList.add('open');
+            
+            setTimeout(() => {
+                giftContent.style.display = 'block';
+                createConfetti();
+            }, 800);
+        }
+
+        // Open the inner gift box
+        function openInnerGift() {
+            const innerGift = document.getElementById('innerGift');
+            const finalGift = document.getElementById('finalGift');
+            
+            innerGift.classList.add('open');
+            
+            setTimeout(() => {
+                finalGift.style.display = 'block';
+                createConfetti();
+            }, 800);
+        }
+
+        // Show the special message
+        function showMessage() {
+            const specialMessage = document.getElementById('specialMessage');
+            specialMessage.style.display = 'block';
+            createConfetti();
+        }
+
+        // Allow Enter key to submit name
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkName();
+            }
+        });
+
+        // Generate QR code when page loads
+        window.onload = function() {
+            generateQRCode();
+            createConfetti();
+        };
+    </script>
+</body>
+</html>
